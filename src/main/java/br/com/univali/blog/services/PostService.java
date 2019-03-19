@@ -1,19 +1,67 @@
 package br.com.univali.blog.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import br.com.univali.blog.commands.PostForm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import br.com.univali.blog.converters.PostFormToPost;
+import br.com.univali.blog.forms.PostForm;
 import br.com.univali.blog.models.Post;
+import br.com.univali.blog.models.User;
+import br.com.univali.blog.repositories.PostRepository;
 
-public interface PostService {
+@Service
+public class PostService {
 
-	List<Post> listAll();
+	@Autowired
+	private PostRepository postRepository;
 
-	Post getById(String id);
+	@Autowired
+	private PostFormToPost postFormToPost;
 
-	Post saveOrUpdate(Post post);
+	public List<Post> listAll() {
+		List<Post> posts = new ArrayList<>();
+		postRepository.findAll().forEach(posts::add); // fun with Java 8
+		return posts;
+	}
 
-	void delete(String id);
+	public Post getById(String id) {
+		return postRepository.findById(id).orElse(null);
+	}
 
-	Post saveOrUpdatePostForm(PostForm postForm);
+	public Post saveOrUpdate(Post post) {
+		postRepository.save(post);
+		return post;
+	}
+
+
+	public void delete(String id) {
+		postRepository.deleteById(id);
+	}
+
+	public Post saveOrUpdatePostForm(PostForm postForm) {
+		Post savedPost = saveOrUpdate(postFormToPost.convert(postForm));
+
+		System.out.println("Saved Post Id: " + savedPost.getId());
+		return savedPost;
+	}
+
+	@SuppressWarnings("deprecation")
+	public Page<Post> findAllByOrderByCreateDateDesc(int page) {
+		return postRepository.findAllByOrderByCreateDateDesc(new PageRequest(subtractPageByOne(page), 5));
+	}
+
+	private int subtractPageByOne(int page) {
+		return (page < 1) ? 0 : page - 1;
+	}
+
+	@SuppressWarnings("deprecation")
+	public Page<Post> findByUserOrderByCreateDateDesc(User user, int page) {
+		return postRepository.findByUserOrderByCreateDateDesc(user, new PageRequest(subtractPageByOne(page), 5));
+	}
+
 }

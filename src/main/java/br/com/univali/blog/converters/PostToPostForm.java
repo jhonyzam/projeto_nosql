@@ -3,7 +3,7 @@ package br.com.univali.blog.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import br.com.univali.blog.commands.PostForm;
+import br.com.univali.blog.forms.PostForm;
 import br.com.univali.blog.models.Post;
 
 @Component

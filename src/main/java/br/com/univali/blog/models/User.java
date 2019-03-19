@@ -1,6 +1,5 @@
 package br.com.univali.blog.models;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,12 +10,20 @@ public class User {
 	private String id;
 	private String username;
 	private String password;
+	private String email;
+	private String name;
 	private String role;
-	
-	public User(String username, String password,String role) {
+
+	public User() {
+		super();
+	}
+
+	public User(String username, String password, String email, String name, String role) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.email = email;
+		this.name = name;
 		this.role = role;
 	}
 	public String getId() {
@@ -36,6 +43,19 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getRole() {
 		return role;

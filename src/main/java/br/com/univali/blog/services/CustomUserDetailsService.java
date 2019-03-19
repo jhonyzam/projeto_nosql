@@ -1,4 +1,4 @@
-package br.com.univali.blog.services.impl;
+package br.com.univali.blog.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,15 +13,14 @@ import br.com.univali.blog.services.UserService;
 public class CustomUserDetailsService implements UserDetailsService {
 
 	private final UserService userService;
-	
+
 	@Autowired
 	public CustomUserDetailsService(UserService userService) {
 		this.userService = userService;
 	}
 
 	@Override
-	public UserSecurity loadUserByUsername(String username)
-			throws UsernameNotFoundException {
+	public UserSecurity loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.findByUsername(username);
 		return new UserSecurity(user);
 	}

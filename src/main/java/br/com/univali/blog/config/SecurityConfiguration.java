@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -18,28 +19,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
     private UserDetailsService userDetailsService;
-
+	
+	@Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-        .antMatchers("/post/list").permitAll()
-        .antMatchers("/admin/**").hasAuthority("ADMIN")
-        .anyRequest().fullyAuthenticated()
-        .and()
-        .formLogin()
-        .loginPage("/login")
-        .defaultSuccessUrl("/")
-        .failureUrl("/login?error")
-        .usernameParameter("username")
-        .permitAll()
-        .and()
-        .logout()
-        .logoutUrl("/logout")
-        .deleteCookies("remember-me")
-        .logoutSuccessUrl("/login")
-        .permitAll()
-        .and()
-        .rememberMe();
+	        .antMatchers("/post/show/**","/post/list", "/blog/**","/registration", "/css/**", "/js/**").permitAll()
+	        .anyRequest().authenticated()
+	        .and()
+	        .formLogin()
+	        .loginPage("/login")
+	        .defaultSuccessUrl("/")
+	        .failureUrl("/login?error")
+	        .usernameParameter("username")
+	        .permitAll()
+	        .and()
+	        .logout()
+	        .logoutUrl("/logout")                
+	        .deleteCookies("remember-me")
+	        .logoutSuccessUrl("/login")
+	        .permitAll()
+	        .and()
+	        .rememberMe()
+	        .and()
+	        .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 	}
 
 	@Autowired

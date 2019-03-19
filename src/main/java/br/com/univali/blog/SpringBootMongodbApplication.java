@@ -10,23 +10,23 @@ import br.com.univali.blog.models.User;
 import br.com.univali.blog.services.UserService;
 
 @SpringBootApplication
-public class SpringBootMongodbApplication implements CommandLineRunner{
-	
+public class SpringBootMongodbApplication implements CommandLineRunner {
+
 	@Autowired
 	UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootMongodbApplication.class, args);
 	}
-	
+
 	@Override
 	public void run(String... arg0) throws Exception {
-		String encodedPassword = passwordEncoder.encode("demo"); 
-		userService.deleteAll();
-		User user = new User("demo", encodedPassword, "ADMIN");
-		userService.save(user);
-	}		
+		User user = userService.findByUsername("admin");
+		if (user == null) {
+			userService.save(new User("admin", passwordEncoder.encode("admin"), "admin@gmail.com", "DEUS", "ADMIN"));
+		}
+	}
 }

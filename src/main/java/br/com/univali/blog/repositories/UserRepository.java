@@ -6,5 +6,6 @@ import br.com.univali.blog.models.User;
 
 public interface UserRepository extends MongoRepository<User, String>{
 	public User findByUsernameAndPassword(String username,String password);
-	public User findByUsername(String username);
+	public User findByUsername(String username);	
+	public User findByEmail(String email);
 }
