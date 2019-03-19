@@ -20,7 +20,7 @@
 				<form autocomplete="off" action="#" th:action="@{/post/new}" th:object="${postForm}" method="post" role="form">
 					<input type="hidden" th:field="*{id}" />
 					<div class="form-group">
-						<input type="text" th:field="*{title}" placeholder="Titulo" class="form-control" />
+						<input type="text" th:field="*{title}" placeholder="Titulo" class="form-control" autofocus="autofocus"/>
 						<label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="alert alert-danger"></label>
 					</div>
 
