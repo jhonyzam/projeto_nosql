@@ -70,4 +70,10 @@ public class BlogService {
 		Blog blog = blogRepository.findByKey(blogKey).orElse(null);
 		return (blog != null) ? "/blog/" + blog.getKey() : "/blog/list";
 	}
+
+	public String getIdBlog(String blogKey) {
+		Blog blog = blogRepository.findByKey(blogKey).orElse(null);
+		return (blog != null) ? "/blog/" + blog.getKey() + "/edit/" + blog.getId() : "/blog/list";
+	}
+
 }

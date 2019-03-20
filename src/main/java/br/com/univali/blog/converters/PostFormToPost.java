@@ -27,6 +27,7 @@ public class PostFormToPost implements Converter<PostForm, Post> {
 		if (postForm.getId() != null && !StringUtils.isEmpty(postForm.getId())) {
 			post.setId(new ObjectId(postForm.getId()));
 			post.setUpdateDate(new Date());
+			post.setCreateDate(postForm.getCreateDate());
 		} else {
 			post.setCreateDate(new Date());
 		}

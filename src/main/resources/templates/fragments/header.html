@@ -26,11 +26,16 @@
 					<ul class="nav navbar-nav" sec:authorize="hasRole('USER')">
 					</ul>
 					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
-						<li class="active"><a th:href="@{/blog/new}">Novo Blog</a></li>
+						<li class="active"><a th:if="${@validateService.validateUserPermissionBlog(blogKey) != true}" th:href="@{/blog/new}">Novo Blog</a></li>
+					</ul>
+					
+					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+						<li class="active"><a th:if="${@validateService.validateUserPermissionBlog(blogKey)}" th:href="@{'/blog/' + ${blogKey} + '/post/new'}">Novo Post</a></li>
 					</ul>
 					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
-						<li class="active"><a th:if="${@validateService.validateCreatePost(blogKey)}" th:href="@{'/blog/' + ${blogKey} + '/post/new'}">Novo Post</a></li>
+						<li class="active"><a th:if="${@validateService.validateUserPermissionBlog(blogKey)}" th:href="${@blogService.getIdBlog(blogKey)}">Editar Blog</a></li>
 					</ul>
+
 					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
 						<li class="active">
 							<form th:action="@{/logout}" method="post">

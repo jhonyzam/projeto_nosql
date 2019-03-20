@@ -32,3 +32,31 @@ a:hover, a:focus, a:active {
 	margin-bottom: 5px;
 	padding: 10px;
 }
+
+.blog-autor {
+	margin-left: 15px;
+	position: relative;
+	top: -5px;
+}
+
+.blog-autor>h5 {
+	display: inline;
+	font-weight: bold;
+}
+
+.post-autor {
+	display: inline;
+	margin-left: 5px;
+	position: relative;
+	top: -5px;
+}
+
+.post-date {
+	display: inline;
+	position: relative;
+	top: -5px;
+}
+
+.post-edit {
+	display: block;
+}

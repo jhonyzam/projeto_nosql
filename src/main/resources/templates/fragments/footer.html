@@ -7,12 +7,12 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 text-center">
+				    <a th:href="${@blogService.getUrlBlog(null)}">Lista de blogs</a><br>
 					<span sec:authorize="isAuthenticated()"> 
 					   Usuário: <span sec:authentication="name"></span> 
 					   <!-- | Roles: <span sec:authentication="principal.authorities"></span> -->
 					</span>
-					<div>
-					   <a th:href="${@blogService.getUrlBlog(null)}">Lista de blogs</a>
+					<div>					   
 						<p class="text-center">&copy; 2019 Olhou Sorriu Mandioca no Bombril</p>
 					</div>
 

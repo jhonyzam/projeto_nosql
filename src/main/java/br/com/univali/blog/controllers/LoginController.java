@@ -23,7 +23,7 @@ public class LoginController {
 				break;
 		}
 		if (hasRole)
-			return new ModelAndView();
+			return new ModelAndView("redirect:/blog/list");
 		else
 			return new ModelAndView("login");
 	}

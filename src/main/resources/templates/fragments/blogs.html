@@ -6,9 +6,9 @@
 		<div class="starter-template panel" th:each="blog : ${pager.blogs}">
 			<div class="panel-heading">
 				<h3>
-				    <!-- <span th:text="${@thymeleafService.pegaString()}"></span> -->
-					<a th:text="'- ' + ${blog.title}" th:href="@{'/blog/' + ${blog.key}}">Titulo do blog</a>
+					<a th:text="'- ' + ${blog.title}" th:href="@{'/blog/' + ${blog.key}}">Titulo do blog</a>					
 				</h3>				
+				<span class="blog-autor">Autor:<h5 th:text="' ' + ${blog.user.name}">Default</h5></span>
 			</div>			
 		</div>
 	</div>

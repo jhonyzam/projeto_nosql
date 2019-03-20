@@ -26,11 +26,14 @@ public class BlogFormToBlog implements Converter<BlogForm, Blog> {
 		Blog blog = new Blog();
 		if (blogForm.getId() != null && !StringUtils.isEmpty(blogForm.getId())) {
 			blog.setId(new ObjectId(blogForm.getId()));
+			blog.setCreateDate(blogForm.getCreateDate());
+		}else{
+			blog.setCreateDate(new Date());
 		}
 
 		blog.setKey(blogForm.getKey().toLowerCase());
 		blog.setTitle(blogForm.getTitle());
-		blog.setCreateDate(new Date());
+		
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findByUsername(auth.getName());

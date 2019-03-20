@@ -24,7 +24,7 @@ public class PostController {
 
 	@Autowired
 	private PostToPostForm postToPostForm;
-	
+
 	@Autowired
 	private ValidateService validateService;
 
@@ -38,8 +38,12 @@ public class PostController {
 		return "post/show";
 	}
 
-	@RequestMapping("post/edit/{id}")
-	public String editPost(@PathVariable String id, Model model) {
+	@RequestMapping("/blog/{blogKey}/post/edit/{id}")
+	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {
+		if (!validateService.validateUserPermissionBlog(blogKey)) {
+			return "redirect:/blog/" + blogKey;
+		}
+		
 		Post post = postService.getById(id);
 		PostForm postForm = postToPostForm.convert(post);
 
@@ -48,9 +52,9 @@ public class PostController {
 	}
 
 	@RequestMapping("/blog/{blogKey}/post/new")
-	public String newPost(@PathVariable("blogKey") String blogKey, Model model) {		
-		
-		if (!validateService.validateCreatePost(blogKey)) {
+	public String newPost(@PathVariable("blogKey") String blogKey, Model model) {
+
+		if (!validateService.validateUserPermissionBlog(blogKey)) {
 			return "redirect:/blog/" + blogKey;
 		}
 
@@ -73,17 +77,23 @@ public class PostController {
 			bindingResult.rejectValue("body", "error.post", "Campo não pode ser vazio");
 		}
 
+		// Pegar data de criacao
+		if (!postForm.getId().isEmpty()) {
+			Post post = postService.getById(postForm.getId());
+			postForm.setCreateDate(post.getCreateDate());
+		}
+
 		if (!bindingResult.hasErrors()) {
 			Post savedPost = postService.savePost(postForm);
-			return "redirect:/blog/" + blogKey + "/post/show/" + savedPost.getId();
+			return "redirect:/blog/" + blogKey + "/post/" + savedPost.getId();
 		}
 
 		return "post/postform";
 	}
 
-	@RequestMapping("/blog/{blogKey}/post/delete/{id}")
-	public String deletePost(@PathVariable String id) {
-		postService.delete(id);
-		return "redirect:/post/list";
-	}
+//	@RequestMapping("/blog/{blogKey}/post/delete/{id}")
+//	public String deletePost(@PathVariable String id) {
+//		postService.delete(id);
+//		return "redirect:/post/list";
+//	}
 }
