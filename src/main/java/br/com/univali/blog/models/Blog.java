@@ -7,19 +7,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Post {
+public class Blog {
 	@Id
 	private ObjectId _id;
 
+	private String key;
+
 	private String title;
 
-	private String body;
-
 	private Date createDate;
-
-	private Date updateDate;
-
-	private String blogKey;
 
 	private User user;
 
@@ -31,6 +27,14 @@ public class Post {
 		this._id = _id;
 	}
 
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -39,36 +43,12 @@ public class Post {
 		this.title = title;
 	}
 
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
 	public Date getCreateDate() {
 		return createDate;
 	}
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getBlogKey() {
-		return blogKey;
-	}
-
-	public void setBlogKey(String blogKey) {
-		this.blogKey = blogKey;
 	}
 
 	public User getUser() {

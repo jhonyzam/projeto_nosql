@@ -7,11 +7,11 @@ import br.com.univali.blog.models.Post;
 /**
  * @author Dusan Raljic
  */
-public class Pager {
+public class PagerPost {
 
     private final Page<Post> posts;
 
-    public Pager(Page<Post> posts) {
+    public PagerPost(Page<Post> posts) {
         this.posts = posts;
     }
 

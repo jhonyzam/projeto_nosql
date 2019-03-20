@@ -33,18 +33,17 @@ public class PostService {
 		return postRepository.findById(id).orElse(null);
 	}
 
-	public Post saveOrUpdate(Post post) {
+	public Post save(Post post) {
 		postRepository.save(post);
 		return post;
 	}
-
 
 	public void delete(String id) {
 		postRepository.deleteById(id);
 	}
 
-	public Post saveOrUpdatePostForm(PostForm postForm) {
-		Post savedPost = saveOrUpdate(postFormToPost.convert(postForm));
+	public Post savePost(PostForm postForm) {
+		Post savedPost = save(postFormToPost.convert(postForm));
 
 		System.out.println("Saved Post Id: " + savedPost.getId());
 		return savedPost;
@@ -62,6 +61,11 @@ public class PostService {
 	@SuppressWarnings("deprecation")
 	public Page<Post> findByUserOrderByCreateDateDesc(User user, int page) {
 		return postRepository.findByUserOrderByCreateDateDesc(user, new PageRequest(subtractPageByOne(page), 5));
+	}
+
+	@SuppressWarnings("deprecation")
+	public Page<Post> findByBlogKeyOrderByCreateDateDesc(String blogKey, int page) {
+		return postRepository.findByBlogKeyOrderByCreateDateDesc(blogKey, new PageRequest(subtractPageByOne(page), 5));
 	}
 
 }

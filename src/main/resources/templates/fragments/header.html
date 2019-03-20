@@ -14,21 +14,22 @@
 		<nav class="navbar navbar-inverse">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" th:href="@{/post/list}">Blog da ra&ccedil;a</a>
+					<a class="navbar-brand" th:href="${@blogService.getUrlBlog(blogKey)}" th:text="${@blogService.getTitleBlog(blogKey)}">Blog Default</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse navbar-right">
-					<!-- show registration only if user is not yet authenticated -->
 					<ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
 						<li class="active"><a th:href="@{/registration}">Registrar</a></li>
 					</ul>
-					<!-- show login only if user is not yet authenticated -->
 					<ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
 						<li class="active"><a th:href="@{/login}">Login</a></li>
 					</ul>
 					<ul class="nav navbar-nav" sec:authorize="hasRole('USER')">
 					</ul>
 					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
-						<li class="active"><a th:href="@{/post/new}">Novo Post</a></li>
+						<li class="active"><a th:href="@{/blog/new}">Novo Blog</a></li>
+					</ul>
+					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+						<li class="active"><a th:if="${@validateService.validateCreatePost(blogKey)}" th:href="@{'/blog/' + ${blogKey} + '/post/new'}">Novo Post</a></li>
 					</ul>
 					<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
 						<li class="active">
@@ -41,6 +42,5 @@
 			</div>
 		</nav>
 	</div>
-
 </body>
 </html>

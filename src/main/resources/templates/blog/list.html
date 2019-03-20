@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>List Posts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<div th:replace="/fragments/header :: header-css" />
+
+</head>
+<body>
+	<div th:replace="/fragments/header :: header" />
+
+	<div class="container">
+		<div th:replace="/fragments/blogs :: blogs" />
+
+		<div th:replace="/fragments/pagination :: pagination(URLparameter='/post/list')" />
+	</div>
+
+	<div th:replace="/fragments/footer :: footer" />
+
+</body>
+</html>

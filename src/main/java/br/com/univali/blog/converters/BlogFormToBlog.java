@@ -10,36 +10,33 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import br.com.univali.blog.forms.PostForm;
-import br.com.univali.blog.models.Post;
+import br.com.univali.blog.forms.BlogForm;
+import br.com.univali.blog.models.Blog;
 import br.com.univali.blog.models.User;
 import br.com.univali.blog.services.UserService;
 
 @Component
-public class PostFormToPost implements Converter<PostForm, Post> {
+public class BlogFormToBlog implements Converter<BlogForm, Blog> {
 
 	@Autowired
 	UserService userService;
 
 	@Override
-	public Post convert(PostForm postForm) {
-		Post post = new Post();
-		if (postForm.getId() != null && !StringUtils.isEmpty(postForm.getId())) {
-			post.setId(new ObjectId(postForm.getId()));
-			post.setUpdateDate(new Date());
-		} else {
-			post.setCreateDate(new Date());
+	public Blog convert(BlogForm blogForm) {
+		Blog blog = new Blog();
+		if (blogForm.getId() != null && !StringUtils.isEmpty(blogForm.getId())) {
+			blog.setId(new ObjectId(blogForm.getId()));
 		}
 
-		post.setTitle(postForm.getTitle());
-		post.setBody(postForm.getBody());
-		post.setBlogKey(postForm.getBlogKey());
+		blog.setKey(blogForm.getKey().toLowerCase());
+		blog.setTitle(blogForm.getTitle());
+		blog.setCreateDate(new Date());
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findByUsername(auth.getName());
 
-		post.setUser(user);
+		blog.setUser(user);
 
-		return post;
+		return blog;
 	}
 }

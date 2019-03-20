@@ -9,6 +9,8 @@ public class PostForm {
 	private String title;
 	private String body;
 	private Date createDate;
+	private Date updateDate;
+	private String blogKey;
 	private User user;
 
 	public String getId() {
@@ -41,6 +43,22 @@ public class PostForm {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getBlogKey() {
+		return blogKey;
+	}
+
+	public void setBlogKey(String blogKey) {
+		this.blogKey = blogKey;
 	}
 
 	public User getUser() {

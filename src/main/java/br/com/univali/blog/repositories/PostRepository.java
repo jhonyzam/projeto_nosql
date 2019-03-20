@@ -11,6 +11,8 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
 	Page<Post> findAllByOrderByCreateDateDesc(Pageable pageable);
 
+	Page<Post> findByBlogKeyOrderByCreateDateDesc(String key, Pageable pageable);
+	
 	Page<Post> findByUserOrderByCreateDateDesc(User user, Pageable pageable);
 
 }

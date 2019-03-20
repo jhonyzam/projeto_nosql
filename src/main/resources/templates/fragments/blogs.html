@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<div th:fragment="blogs">
+		<div class="starter-template panel" th:each="blog : ${pager.blogs}">
+			<div class="panel-heading">
+				<h3>
+				    <!-- <span th:text="${@thymeleafService.pegaString()}"></span> -->
+					<a th:text="'- ' + ${blog.title}" th:href="@{'/blog/' + ${blog.key}}">Titulo do blog</a>
+				</h3>				
+			</div>			
+		</div>
+	</div>
+</body>
+</html>
