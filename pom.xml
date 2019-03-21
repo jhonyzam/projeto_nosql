@@ -5,7 +5,7 @@
 
 	<groupId>br.com.univali.blog</groupId>
 	<artifactId>projeto_nosql</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>projeto_nosql</name>

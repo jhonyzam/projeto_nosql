@@ -5,9 +5,9 @@
 	<div th:fragment="posts">
 		<div class="starter-template panel" th:each="post : ${pager.posts}">
 			<div class="panel-heading">
-				<h1>
+				<h3>
 					<a th:text="${post.title}" th:href="@{'/blog/' + ${blogKey} + '/post/' + ${post.id}}">Title</a>
-				</h1>
+				</h3>
 				<div class="post-date" th:text="'Criado: ' + ${#dates.format(post.createDate, 'dd/MM/yyyy - HH:mm')} + ' por: '">Created by</div>
 				<div class="post-autor">
 					<span th:text="${post.user.name}">Usuário</span>
@@ -16,8 +16,7 @@
                     <a  th:text="'Editar post'" th:href="@{'/blog/' + ${blogKey} + '/post/edit/' + ${post.id}}">Title</a>
                 </div>		
 			</div>
-			<h3 class="panel-body" th:text="${post.body}">Mensagem</h3>
-			<br></br>
+			<p class="panel-body" th:text="${post.body}">Mensagem</p>			
 		</div>
 	</div>
 </body>
