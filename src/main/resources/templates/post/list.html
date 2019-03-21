@@ -13,7 +13,7 @@
 	<div class="container">
 		<div th:replace="/fragments/posts :: posts" />
 
-		<div th:replace="/fragments/pagination :: pagination(URLparameter='/post/list')" />
+		<div th:replace="/fragments/pagination :: pagination(URLparameter='/blog/' + ${blogKey})" />
 	</div>
 
 	<div th:replace="/fragments/footer :: footer" />
