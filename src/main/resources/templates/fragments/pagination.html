@@ -9,8 +9,8 @@
 
 		<span th:if="${pager.indexOutOfBounds()}">
 			<div th:switch="${tipo}">
-                <span th:case="'blog'">Não existe nenhum blog. Voltar para a <a class="pageLink" th:href="@{${baseUrl}(page=1)}">Pagina inicial</a>.</span>           
-		        <span th:case="*">Não existe nenhum post. Voltar para a <a class="pageLink" th:href="@{${baseUrl}(page=1)}">Pagina inicial</a>.</span>
+                <span th:case="'blog'">Não existe nenhum blog. Voltar para a <a class="pageLink" th:href="'/'">Pagina inicial</a>.</span>           
+		        <span th:case="*">Não existe nenhum post. Voltar para a <a class="pageLink" th:href="'/'">Pagina inicial</a>.</span>
             </div>
 		</span>
         <span th:unless="${pager.indexOutOfBounds()}">

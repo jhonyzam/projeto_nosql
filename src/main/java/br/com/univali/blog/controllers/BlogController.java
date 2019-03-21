@@ -52,9 +52,9 @@ public class BlogController {
 
 		model.addAttribute("tipo", "blog");
 		model.addAttribute("user", user);
-		model.addAttribute("blogs", blogService.listAll());
+//		model.addAttribute("blogs", blogService.listAll());
 
-		Page<Blog> blogs = blogService.findAllByOrderByCreateDateDesc(page);
+		Page<Blog> blogs = blogService.findAllByOrderByCreateDateDesc2(page);
 		PagerBlog pager = new PagerBlog(blogs);
 
 		model.addAttribute("pager", pager);
