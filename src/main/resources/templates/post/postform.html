@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Post Form</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <div th:replace="/fragments/header :: header-css" />
@@ -45,22 +44,13 @@
 								<option value="0"></option>
 							</select>
 						</div>
-						<!--
-						<div class="form-group">
-							<input type="text" th:field="*{secao.title}" placeholder="Titulo da seção" id="secaoTitle" class="form-control" />
-							<label th:if="${#fields.hasErrors('secao.title')}" th:errors="*{secao.title}" class="alert alert-danger"></label>
-						</div>
-						<div class="form-group">
-							<textarea class="form-control" th:field="*{secao.body}" id="secaoBody" placeholder="Mensagem da seção" rows="7"></textarea>
-							<label th:if="${#fields.hasErrors('secao.body')}" th:errors="*{secao.body}" class="alert alert-danger"></label>
-						</div> 
-						-->
-
 						<div class="form-group">
 							<input type="text" placeholder="Titulo da seção" id="secaoTitle" class="form-control" />
+							<label style="display: none;" id="secaoTitleError" class="alert alert-danger"></label>
 						</div>
 						<div class="form-group">
 							<textarea class="form-control" id="secaoBody" placeholder="Mensagem da seção" rows="7"></textarea>
+							<label style="display: none;" id="secaoBodyError" class="alert alert-danger"></label>
 						</div>
 						<div class="row">
 							<button id="btnAddSecao" type="button" class="btn btn-success btn-sm">
@@ -73,11 +63,11 @@
 								<label th:if="${postForm.secoes != null}">Seções:</label>
 								<div th:if="${postForm.secoes != null}" class="col-sm-12 secaoPostForm" th:each="secao: ${postForm.secoes}">
 									<h4>
-										<span th:text="${secao.paragrafo} + '.'">paragrafo</span>
-										<span th:text="${secao.title}">title</span>
+										<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>
 									</h4>
 									<!-- <p class="secao-paragrafo" th:text="${secao.body}">body</p> -->
 								</div>
+								<label th:if="${#fields.hasErrors('secoes')}" th:errors="*{secoes}" class="alert alert-danger"></label>
 							</div>
 						</div>
 

@@ -42,17 +42,17 @@ public class PostController {
 		Post post = postService.getById(id);
 
 		model.addAttribute("blogKey", post.getBlogKey());
-		model.addAttribute("post", post);	
-		
+		model.addAttribute("post", post);
+
 		return "post/show";
 	}
 
 	@RequestMapping("/blog/{blogKey}/post/edit/{id}")
-	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {			
+	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {
 		if (!validateService.validateUserPermissionBlog(blogKey)) {
 			return "redirect:/blog/" + blogKey;
 		}
-		
+
 		Post post = postService.getById(id);
 		PostForm postForm = postToPostForm.convert(post);
 
@@ -78,22 +78,28 @@ public class PostController {
 	@RequestMapping(value = "/post/new", method = RequestMethod.POST)
 	public String savePost(@Valid PostForm postForm, BindingResult bindingResult) throws JsonParseException, JsonMappingException, IOException {
 		String blogKey = postForm.getBlogKey();
-		
-		if(postForm.getSecaoActive()){
-			//Seta branco
+
+		if (postForm.getSecaoActive()) {
+			// Seta branco
 			postForm.setBody("");
-			
-			ObjectMapper mapper = new ObjectMapper();
-			String json = postForm.getSecao();
-			List<Secao> secoes = mapper.readValue(json, new TypeReference<List<Secao>>() {});
-			
-			postForm.setSecoes(secoes);			
-		}else{
+
+			if (postForm.getSecao().isEmpty()) {
+				bindingResult.rejectValue("secoes", "error.post", "Precisa inserir 1 ou mais seções");
+			} else {
+				ObjectMapper mapper = new ObjectMapper();
+				String json = postForm.getSecao();
+				List<Secao> secoes = mapper.readValue(json, new TypeReference<List<Secao>>() {
+				});
+
+				postForm.setSecoes(secoes);
+			}
+
+		} else {
 			if (postForm.getBody().isEmpty()) {
 				bindingResult.rejectValue("body", "error.post", "Campo não pode ser vazio");
-			}			
+			}
 		}
-		
+
 		if (postForm.getTitle().isEmpty()) {
 			bindingResult.rejectValue("title", "error.post", "Campo não pode ser vazio");
 		}
@@ -112,9 +118,9 @@ public class PostController {
 		return "post/postform";
 	}
 
-//	@RequestMapping("/blog/{blogKey}/post/delete/{id}")
-//	public String deletePost(@PathVariable String id) {
-//		postService.delete(id);
-//		return "redirect:/post/list";
-//	}
+	// @RequestMapping("/blog/{blogKey}/post/delete/{id}")
+	// public String deletePost(@PathVariable String id) {
+	// postService.delete(id);
+	// return "redirect:/post/list";
+	// }
 }

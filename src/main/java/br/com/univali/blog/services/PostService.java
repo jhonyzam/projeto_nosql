@@ -30,13 +30,7 @@ public class PostService {
 	}
 
 	public Post getById(String id) {
-		Post post = postRepository.findById(id).orElse(null);
-		
-//		List<Secao> secoes = post.getSecoes().stream()
-//				  .sorted(Comparator.comparing(Secao::getParagrafo))
-//				  .collect(Collectors.toList());
-//		
-//		post.setSecoes(secoes);
+		Post post = postRepository.findById(id).orElse(null);		
 		return post;
 	}
 
