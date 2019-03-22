@@ -25,13 +25,13 @@ public class PostFormToPost implements Converter<PostForm, Post> {
 	public Post convert(PostForm postForm) {
 		Post post = new Post();
 		if (postForm.getId() != null && !StringUtils.isEmpty(postForm.getId())) {
-			post.setId(new ObjectId(postForm.getId()));
-			post.setUpdateDate(new Date());
+			post.setId(new ObjectId(postForm.getId()));			
 			post.setCreateDate(postForm.getCreateDate());
 		} else {
 			post.setCreateDate(new Date());
 		}
 		
+		post.setUpdateDate(new Date());
 		post.setTitle(postForm.getTitle());		
 		post.setSecoes(postForm.getSecoes());		
 		post.setBody(postForm.getBody());

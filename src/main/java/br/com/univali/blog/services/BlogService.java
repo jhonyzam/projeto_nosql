@@ -70,10 +70,9 @@ public class BlogService {
 
 	@SuppressWarnings("deprecation")
 	public Page<Blog> findAllByOrderByCreateDateDesc2(int page) {
-
 		LookupOperation lookupOperation = LookupOperation.newLookup().from("post").localField("key").foreignField("blogKey").as("post");
 
-		AggregationOperation group = Aggregation.group("_id", "key", "title", "createDate", "user").max("$post.createDate").as("dateLastPost");
+		AggregationOperation group = Aggregation.group("_id", "key", "title", "createDate", "user").max("$post.updateDate").as("dateLastPost");
 
 		Aggregation aggregation = Aggregation.newAggregation(lookupOperation, group, sort(Sort.Direction.DESC, "dateLastPost"));
 
