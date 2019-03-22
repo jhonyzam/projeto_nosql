@@ -26,8 +26,8 @@ $(document).ready(function() {
 						
 		if(objEditSecao == null){
 			id = id + 1;
-			var seq = componentCountParentSeq(parent);
 			var parent = Number($("#secaoParent").val());
+			var seq = componentCountParentSeq(parent);			
 		}else{
 			id = objEditSecao.id;
 			var seq = objEditSecao.seq;
@@ -178,8 +178,7 @@ $(document).ready(function() {
 	}	
 	
 	function componentRemoveSecao(idRemove) {		
-		var ajusteSeq;
-		
+		var ajusteSeq;	
 		for (var i = 0; i < listSecao.length; i++) {
 			if(listSecao[i].id == idRemove){
 				if(listSecao[i].parent == 0){
@@ -197,6 +196,7 @@ $(document).ready(function() {
 			}
 		}		
 		
+		listSecaoOrdenado = [];
 		componentAjustaSeq(ajusteSeq);
 	}
 	
