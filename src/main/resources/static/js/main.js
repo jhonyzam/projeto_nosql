@@ -11,7 +11,7 @@ $(document).ready(function() {
 		
 	$("#btnAddSecao").click(function() {
 		id = id + 1;	
-		
+		listSecaoOrdenado = [];
 		// VALIDATE
 		var title = $("#secaoTitle").val();
 		var body = $("#secaoBody").val();
@@ -24,14 +24,25 @@ $(document).ready(function() {
 		
 		var parent = Number($("#secaoParent").val());
 		var seq = componentCountParentSeq(parent);		
-		var sessao = {"id": id, "paragrafo": "", seq, parent, title, body};
+		var secao = {"id": id, "paragrafo": "", seq, parent, title, body};
 		
-		listSecao.push(sessao);		
-		
+		listSecao.push(secao);		
+				
+		clearInputSecao();
+		componentArvoreSecao1(0);
 		componentComboboxSecao();
-		clearInputSessao();
-		componentArvoreSessao1(0);		
 	});
+	
+	
+	$(document).on('click', '.btnRemoveSecao', function(){	
+		var idRemove = $(this).attr("idSecao");
+		
+		// Remove a secao e suas subsecoes
+		componentRemoveSecao(idRemove);
+		// Recria a arvore
+		componentArvoreSecao1(0);
+		componentComboboxSecao();
+	});	
 	
 	function checkedUncheckedSecao(checked) {
 		if (checked) {
@@ -47,14 +58,13 @@ $(document).ready(function() {
 	
 	function componentComboboxSecao(){			
 		var options = "<option value=\"0\" ></option>";
-		for (var i = 0; i < listSecao.length; i++) {
-			options += "<option value=\""+ listSecao[i].id +"\">" + listSecao[i].title +"</option>"
-		}
-						
+		for (var i = 0; i < listSecaoOrdenado.length; i++) {
+			options += "<option value=\""+ listSecaoOrdenado[i].id +"\">" + listSecaoOrdenado[i].paragrafo +" " + listSecaoOrdenado[i].title +"</option>"
+		}						
 		$("#secaoParent").html(options);
 	}	
 	
-	function clearInputSessao(){
+	function clearInputSecao(){
 		$("#secaoTitle").val("");
 		$("#secaoBody").val("");
 		$("#sesaoParent").val("0");
@@ -80,7 +90,14 @@ $(document).ready(function() {
 			$("#secao").val(myJSON);
 
 			componentComboboxSecao();
-			return Number(listSecao[listSecao.length -1].id);			
+			var lastId = 0;
+			for (var i = 0; i < listSecao.length; i++) {
+			   if (Number(listSecao[i].id) > lastId ) {
+				   lastId = Number(listSecao[i].id);
+			   }
+			}			
+			
+			return lastId;			
 		}
 	}
 
@@ -88,23 +105,30 @@ $(document).ready(function() {
 	var body = "";
 	var paragrafoPai = "";
 	var paragrafoFilhos = "";
-	function componentArvoreSessao1(parent) {
+	function componentArvoreSecao1(parent) {
 		body = "<label>Seções:</label>";
 		for (var i = 0; i < listSecao.length; i++) {						
 			if(listSecao[i].parent === 0){
 				listSecao[i].paragrafo = paragrafoPai = listSecao[i].seq;
 				paragrafoFilhos = "";
-				body += componentLinhaSecao(listSecao[i].paragrafo, listSecao[i].title);
-				componentArvoreSessao2(listSecao[i].id);
+				body += componentLinhaSecao(listSecao[i]);
+				componentArvoreSecao2(listSecao[i].id);
 			}		
 		}
 		
-		var myJSON = JSON.stringify(listSecao);		
-		$("#secao").val(myJSON);
+		var myJSON = JSON.stringify(listSecao);	
+		if(myJSON === "[]")
+			myJSON = "";
+		
+		$("#secao").val(myJSON);		
 		$("#bodyTree").html(body);
+		
+		body = "";
+		paragrafoPai = "";
+		paragrafoFilhos = "";
 	}
 	
-	function componentArvoreSessao2(parent) {		
+	function componentArvoreSecao2(parent) {		
 		var paragrafo = paragrafoFilhos;
 		parent = Number(parent);
 		
@@ -112,24 +136,61 @@ $(document).ready(function() {
 			if(listSecao[i].parent === parent){						
 				paragrafoFilhos += "." + listSecao[i].seq;
 				listSecao[i].paragrafo = paragrafoPai + paragrafoFilhos;
-				body += componentLinhaSecao(listSecao[i].paragrafo, listSecao[i].title);					
-				componentArvoreSessao2(listSecao[i].id);
+				body += componentLinhaSecao(listSecao[i]);					
+				componentArvoreSecao2(listSecao[i].id);
 			}	
 			
 			paragrafoFilhos = paragrafo;
 		}
 	}	
 	
-	function componentLinhaSecao(paragrafo, title){
+	function componentRemoveSecao(idRemove) {		
+		var ajusteSeq;
+		
+		for (var i = 0; i < listSecao.length; i++) {
+			if(Number(listSecao[i].id) === Number(idRemove)){
+				if(listSecao[i].parent === 0){
+					ajusteSeq =listSecao[i].seq; 
+				}
+				
+				listSecao.splice(i, 1);
+				break;
+			}			
+		}
+		
+		for (var i = 0; i < listSecao.length; i++) {
+			if(Number(listSecao[i].parent) === Number(idRemove)){
+				componentRemoveSecao(listSecao[i].id)
+			}
+		}		
+		
+		componentAjustaSeq(ajusteSeq);
+	}
+	
+	function componentAjustaSeq(seq){
+		for (var i = 0; i < listSecao.length; i++) {
+			if(listSecao[i].parent === 0){
+				if(listSecao[i].seq > seq){
+					listSecao[i].seq = listSecao[i].seq - 1;
+				}
+			}
+		}
+	}
+	
+	function componentLinhaSecao(secao){
 		var localBody = "";
 		
 		localBody += "<div class=\"col-sm-12 secaoPostForm\">";						
-		localBody += "<h4><span>" + paragrafo + ". </span>";
-		localBody += "<span>" + title + "</span></h4></div>";
+		localBody += "<h4><span>" + secao.paragrafo + ". </span>";
+		localBody += "<span>" + secao.title + "</span>";		
+		localBody += "<button idSecao=\"" + secao.id + "\" type=\"button\" class=\"btn btn-danger btn-sm btnRemoveSecao\">X</button>";
+		localBody += "</h4></div>";
+		
+		// ORDERNA ARRAY
+		listSecaoOrdenado.push(secao);
 		
 		return localBody;
 	}
-
 	
 	function validateFielsSecao(title, body){				
 		if(title === ""){
@@ -141,12 +202,8 @@ $(document).ready(function() {
 		if(body === ""){
 			$("#secaoBodyError").html("Campo não pode ser vazio").css("display","block");
 		}else{
-			$("#secaoTitleError").html("").css("display","none");
-		}
-		
-		
-	}	
+			$("#secaoBodyError").html("").css("display","none");
+		}				
+	}
+	
 });
-
-
-

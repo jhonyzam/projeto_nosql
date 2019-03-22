@@ -140,13 +140,18 @@ a:hover, a:focus, a:active {
 	border-bottom: 1px solid #ccc;
 }
 
+.secaoPostForm .btn-danger {
+	margin-right: -15px;
+	float: right;
+}
+
 .divSecaoPostForm {
 	margin-top: 20px;
 	margin-bottom: 20px;
-    float: left;    
-    width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;	
+	float: left;
+	width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 .secao-paragrafo {

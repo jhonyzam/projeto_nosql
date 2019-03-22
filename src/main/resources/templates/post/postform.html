@@ -64,6 +64,7 @@
 								<div th:if="${postForm.secoes != null}" class="col-sm-12 secaoPostForm" th:each="secao: ${postForm.secoes}">
 									<h4>
 										<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>
+										<button th:attr="idSecao=${secao.id}" type="button" class="btn btn-danger btn-sm btnRemoveSecao">X</button>
 									</h4>
 									<!-- <p class="secao-paragrafo" th:text="${secao.body}">body</p> -->
 								</div>
@@ -83,9 +84,10 @@
 
 		<div th:replace="/fragments/footer :: footer" />
 
-		<script th:inline="javascript">			
-			var listSecao = [[${postForm.secoes}]];
-		</script>
+		<script th:inline="javascript">         
+            var listSecao = [[${postForm.secoes}]];
+            var listSecaoOrdenado = listSecao;
+        </script>
 		<script th:src="@{/js/main.js}"></script>
 </body>
 
