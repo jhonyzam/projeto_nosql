@@ -20,8 +20,9 @@ public class GlobalExceptionHandler {
         logger.error("Exception during execution of SpringSecurity application", throwable);
 
         ModelAndView modelAndView = new ModelAndView("/error");
-        //String errorMessage = (throwable != null ? throwable.toString() : "Unknown error");
-        String errorMessage = "Ocorreu um erro inexperado, sente e reze, talvez DEUS lhe ajude!!!";
+        String errorMessage = (throwable != null ? throwable.toString() : "Unknown error");
+        errorMessage += "<br><br>Acho melhor rezar, talvez DEUS lhe ajude!!!";
+        
         modelAndView.addObject("errorMessage", errorMessage);
         return modelAndView;
     }

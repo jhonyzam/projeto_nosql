@@ -1,8 +1,11 @@
 $(document).ready(function() {
 	
 	var id = getLastId();
+	var idEdit = null;
+	var indexEdit = null;
+	var objEditSecao = null;
 	
-	// start verification
+	// Start verification
 	checkedUncheckedSecao($("#chkSecao").is(':checked'));
 	
 	$("#chkSecao").change(function() {
@@ -10,7 +13,6 @@ $(document).ready(function() {
 	});
 		
 	$("#btnAddSecao").click(function() {
-		id = id + 1;	
 		listSecaoOrdenado = [];
 		// VALIDATE
 		var title = $("#secaoTitle").val();
@@ -18,21 +20,53 @@ $(document).ready(function() {
 		
 
 		validateFielsSecao(title, body);
-		if(title === "" || body === ""){
+		if(title == "" || body == ""){
 			return false;
 		}
-		
-		var parent = Number($("#secaoParent").val());
-		var seq = componentCountParentSeq(parent);		
+						
+		if(objEditSecao == null){
+			id = id + 1;
+			var seq = componentCountParentSeq(parent);
+			var parent = Number($("#secaoParent").val());
+		}else{
+			id = objEditSecao.id;
+			var seq = objEditSecao.seq;
+			var parent = objEditSecao.parent;
+		}
+						
 		var secao = {"id": id, "paragrafo": "", seq, parent, title, body};
 		
-		listSecao.push(secao);		
+		if(objEditSecao == null){
+			listSecao.push(secao);
+		}else{
+			listSecao[indexEdit] = secao;
+			objEditSecao = null;
+			indexEdit = null;
+			idEdit = null;
+			
+			componentAjustaSeq(1);
+		}				
 				
 		clearInputSecao();
 		componentArvoreSecao1(0);
 		componentComboboxSecao();
 	});
 	
+	$(document).on('click', '.btnEditSecao', function(){	
+		idEdit = $(this).attr("idSecao");
+		
+		for (var i = 0; i < listSecao.length; i++) {
+			if(idEdit == listSecao[i].id){
+				objEditSecao = listSecao[i];
+				indexEdit = i;
+				break;
+			}
+		}
+		
+		$("#secaoTitle").val(objEditSecao.title);
+		$("#secaoBody").val(objEditSecao.body);
+		$("#secaoParent").val(objEditSecao.parent).attr("disabled", true);
+	});
 	
 	$(document).on('click', '.btnRemoveSecao', function(){	
 		var idRemove = $(this).attr("idSecao");
@@ -67,13 +101,13 @@ $(document).ready(function() {
 	function clearInputSecao(){
 		$("#secaoTitle").val("");
 		$("#secaoBody").val("");
-		$("#sesaoParent").val("0");
+		$("#sesaoParent").val("0").removeAttr("disabled");
 	}
 	
 	function componentCountParentSeq(parent){
 		var count = 0;
 		for (var i = 0; i < listSecao.length; i++) {
-			if(parent === listSecao[i].parent){
+			if(parent == listSecao[i].parent){
 				count++;
 			}
 		}
@@ -108,7 +142,7 @@ $(document).ready(function() {
 	function componentArvoreSecao1(parent) {
 		body = "<label>Seções:</label>";
 		for (var i = 0; i < listSecao.length; i++) {						
-			if(listSecao[i].parent === 0){
+			if(listSecao[i].parent == 0){
 				listSecao[i].paragrafo = paragrafoPai = listSecao[i].seq;
 				paragrafoFilhos = "";
 				body += componentLinhaSecao(listSecao[i]);
@@ -117,7 +151,7 @@ $(document).ready(function() {
 		}
 		
 		var myJSON = JSON.stringify(listSecao);	
-		if(myJSON === "[]")
+		if(myJSON == "[]")
 			myJSON = "";
 		
 		$("#secao").val(myJSON);		
@@ -130,10 +164,9 @@ $(document).ready(function() {
 	
 	function componentArvoreSecao2(parent) {		
 		var paragrafo = paragrafoFilhos;
-		parent = Number(parent);
 		
 		for (var i = 0; i < listSecao.length; i++) {
-			if(listSecao[i].parent === parent){						
+			if(listSecao[i].parent == parent){						
 				paragrafoFilhos += "." + listSecao[i].seq;
 				listSecao[i].paragrafo = paragrafoPai + paragrafoFilhos;
 				body += componentLinhaSecao(listSecao[i]);					
@@ -148,8 +181,8 @@ $(document).ready(function() {
 		var ajusteSeq;
 		
 		for (var i = 0; i < listSecao.length; i++) {
-			if(Number(listSecao[i].id) === Number(idRemove)){
-				if(listSecao[i].parent === 0){
+			if(listSecao[i].id == idRemove){
+				if(listSecao[i].parent == 0){
 					ajusteSeq =listSecao[i].seq; 
 				}
 				
@@ -159,7 +192,7 @@ $(document).ready(function() {
 		}
 		
 		for (var i = 0; i < listSecao.length; i++) {
-			if(Number(listSecao[i].parent) === Number(idRemove)){
+			if(listSecao[i].parent == idRemove){
 				componentRemoveSecao(listSecao[i].id)
 			}
 		}		
@@ -169,7 +202,7 @@ $(document).ready(function() {
 	
 	function componentAjustaSeq(seq){
 		for (var i = 0; i < listSecao.length; i++) {
-			if(listSecao[i].parent === 0){
+			if(listSecao[i].parent == 0){
 				if(listSecao[i].seq > seq){
 					listSecao[i].seq = listSecao[i].seq - 1;
 				}
@@ -182,24 +215,25 @@ $(document).ready(function() {
 		
 		localBody += "<div class=\"col-sm-12 secaoPostForm\">";						
 		localBody += "<h4><span>" + secao.paragrafo + ". </span>";
-		localBody += "<span>" + secao.title + "</span>";		
-		localBody += "<button idSecao=\"" + secao.id + "\" type=\"button\" class=\"btn btn-danger btn-sm btnRemoveSecao\">X</button>";
+		localBody += "<span>" + secao.title + "</span>";				
+		localBody += "<button placeholder=\"Remover seção\"  idSecao=\"" + secao.id + "\" type=\"button\" class=\"btn btn-danger btn-sm btnRemoveSecao\">X</button>";
+		localBody += "<button placeholder=\"Editar seção\"  idSecao=\"" + secao.id + "\" type=\"button\" class=\"btn btn-info btn-sm btnEditSecao\">E</button>";
 		localBody += "</h4></div>";
 		
 		// ORDERNA ARRAY
 		listSecaoOrdenado.push(secao);
 		
 		return localBody;
-	}
+	}	
 	
-	function validateFielsSecao(title, body){				
-		if(title === ""){
+	function validateFielsSecao(title, body){
+		if(title == ""){
 			$("#secaoTitleError").html("Campo não pode ser vazio").css("display","block");
 		}else{
 			$("#secaoTitleError").html("").css("display","none");
 		}
 		
-		if(body === ""){
+		if(body == ""){
 			$("#secaoBodyError").html("Campo não pode ser vazio").css("display","block");
 		}else{
 			$("#secaoBodyError").html("").css("display","none");

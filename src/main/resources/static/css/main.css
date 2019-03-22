@@ -139,10 +139,14 @@ a:hover, a:focus, a:active {
 .secaoPostForm {
 	border-bottom: 1px solid #ccc;
 }
-
+.secaoPostForm .btn-info,
 .secaoPostForm .btn-danger {
 	margin-right: -15px;
 	float: right;
+}
+
+.secaoPostForm .btn-info{
+	margin-right: -5px;
 }
 
 .divSecaoPostForm {

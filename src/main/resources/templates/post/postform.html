@@ -20,7 +20,7 @@
 				<form autocomplete="off" action="#" th:action="@{/post/new}" th:object="${postForm}" method="post" role="form">
 					<input type="hidden" th:field="*{id}" />
 					<input type="hidden" th:field="*{blogKey}" />
-					<input type="hidden" id="secao" th:field="*{secao}" placeholder="" class="form-control" />
+					<input type="hidden" id="secao" th:field="*{secao}" />
 
 					<div class="form-group">
 						<input type="text" th:field="*{title}" placeholder="Titulo" class="form-control" autofocus="autofocus" />
@@ -43,6 +43,7 @@
 							<select class="form-control" id="secaoParent">
 								<option value="0"></option>
 							</select>
+							<label style="display: none;" id="secaoParentError" class="alert alert-danger"></label>
 						</div>
 						<div class="form-group">
 							<input type="text" placeholder="Titulo da seção" id="secaoTitle" class="form-control" />
@@ -63,8 +64,9 @@
 								<label th:if="${postForm.secoes != null}">Seções:</label>
 								<div th:if="${postForm.secoes != null}" class="col-sm-12 secaoPostForm" th:each="secao: ${postForm.secoes}">
 									<h4>
-										<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>
-										<button th:attr="idSecao=${secao.id}" type="button" class="btn btn-danger btn-sm btnRemoveSecao">X</button>
+										<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>										
+										<button th:attr="idSecao=${secao.id}" placeholder="Remover seção" type="button" class="btn btn-danger btn-sm btnRemoveSecao">X</button>
+										<button th:attr="idSecao=${secao.id}" placeholder="Editar seção" type="button" class="btn btn-info btn-sm btnEditSecao">E</button>
 									</h4>
 									<!-- <p class="secao-paragrafo" th:text="${secao.body}">body</p> -->
 								</div>
