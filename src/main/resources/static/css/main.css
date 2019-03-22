@@ -8,6 +8,10 @@ footer {
 	color: #FF1C19;
 }
 
+p {
+	text-align: justify;
+}
+
 a {
 	transition: all .2s;
 }
@@ -70,4 +74,82 @@ a:hover, a:focus, a:active {
 	-moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.29);
 	border-radius: 0;
+	display: inline-block;
+	width: 100%;
+}
+
+.form-check {
+	margin-top: -5px;
+	margin-bottom: 10px;
+}
+
+.form-check label, .form-check iput {
+	cursor: pointer;
+}
+
+#chkSecao {
+	position: relative;
+	top: 2px;
+	height: 14px;
+	width: 14px;
+	cursor: pointer;
+}
+
+#divSecao {
+	display: none;
+}
+
+#divSecao button {
+	margin-left: 15px;
+}
+
+#divSecao ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: table;
+	border-spacing: 10px;
+	border-collapse: separate; /* Redundant */
+}
+
+#divSecao ul li {
+	min-width: 100px;
+	vertical-align: middle;
+	display: table-cell;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-shadow: 0px 0px 3px #aaa;
+	margin-right: 14px;
+	background: #fff;
+	font-family: 'gafata';
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#divSecao ul li img {
+	vertical-align: middle;
+}
+
+.secaoShowItem {
+	float: right;
+}
+
+.secaoPostForm {
+	border-bottom: 1px solid #ccc;
+}
+
+.divSecaoPostForm {
+	margin-top: 20px;
+	margin-bottom: 20px;
+    float: left;    
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;	
+}
+
+.secao-paragrafo {
+	padding-left: 25px;
+	margin-top: -5px;
 }

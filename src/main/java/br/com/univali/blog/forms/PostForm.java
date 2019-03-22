@@ -1,7 +1,9 @@
 package br.com.univali.blog.forms;
 
 import java.util.Date;
+import java.util.List;
 
+import br.com.univali.blog.models.Secao;
 import br.com.univali.blog.models.User;
 
 public class PostForm {
@@ -12,6 +14,11 @@ public class PostForm {
 	private Date updateDate;
 	private String blogKey;
 	private User user;
+	private String secao;
+	private Boolean secaoActive;
+
+	// Transferencia para entitidade
+	private List<Secao> secoes;
 
 	public String getId() {
 		return id;
@@ -67,5 +74,29 @@ public class PostForm {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getSecao() {
+		return secao;
+	}
+
+	public void setSecao(String secao) {
+		this.secao = secao;
+	}
+
+	public Boolean getSecaoActive() {
+		return secaoActive;
+	}
+
+	public void setSecaoActive(Boolean secaoActive) {
+		this.secaoActive = secaoActive;
+	}
+
+	public List<Secao> getSecoes() {
+		return secoes;
+	}
+
+	public void setSecoes(List<Secao> secoes) {
+		this.secoes = secoes;
 	}
 }

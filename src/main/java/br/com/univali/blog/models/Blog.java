@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Blog {
+	
 	@Id
 	private ObjectId _id;
 

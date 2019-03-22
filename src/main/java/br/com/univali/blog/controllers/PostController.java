@@ -1,5 +1,8 @@
 package br.com.univali.blog.controllers;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.univali.blog.converters.PostToPostForm;
 import br.com.univali.blog.forms.PostForm;
 import br.com.univali.blog.models.Post;
+import br.com.univali.blog.models.Secao;
 import br.com.univali.blog.services.PostService;
 import br.com.univali.blog.services.ValidateService;
 
@@ -33,13 +42,13 @@ public class PostController {
 		Post post = postService.getById(id);
 
 		model.addAttribute("blogKey", post.getBlogKey());
-		model.addAttribute("post", post);
-
+		model.addAttribute("post", post);	
+		
 		return "post/show";
 	}
 
 	@RequestMapping("/blog/{blogKey}/post/edit/{id}")
-	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {
+	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {			
 		if (!validateService.validateUserPermissionBlog(blogKey)) {
 			return "redirect:/blog/" + blogKey;
 		}
@@ -67,14 +76,26 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/post/new", method = RequestMethod.POST)
-	public String savePost(@Valid PostForm postForm, BindingResult bindingResult) {
+	public String savePost(@Valid PostForm postForm, BindingResult bindingResult) throws JsonParseException, JsonMappingException, IOException {
 		String blogKey = postForm.getBlogKey();
-
+		
+		if(postForm.getSecaoActive()){
+			//Seta branco
+			postForm.setBody("");
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String json = postForm.getSecao();
+			List<Secao> secoes = mapper.readValue(json, new TypeReference<List<Secao>>() {});
+			
+			postForm.setSecoes(secoes);			
+		}else{
+			if (postForm.getBody().isEmpty()) {
+				bindingResult.rejectValue("body", "error.post", "Campo não pode ser vazio");
+			}			
+		}
+		
 		if (postForm.getTitle().isEmpty()) {
 			bindingResult.rejectValue("title", "error.post", "Campo não pode ser vazio");
-		}
-		if (postForm.getBody().isEmpty()) {
-			bindingResult.rejectValue("body", "error.post", "Campo não pode ser vazio");
 		}
 
 		// Pegar data de criacao

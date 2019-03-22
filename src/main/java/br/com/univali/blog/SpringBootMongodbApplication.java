@@ -22,7 +22,7 @@ public class SpringBootMongodbApplication implements CommandLineRunner {
 		SpringApplication.run(SpringBootMongodbApplication.class, args);
 	}
 
-	@Override
+	@Override 
 	public void run(String... arg0) throws Exception {
 		User user = userService.findByUsername("admin");
 		if (user == null) {

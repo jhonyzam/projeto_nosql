@@ -13,10 +13,19 @@
 					<span th:text="${post.user.name}">Usuário</span>
 				</div>
 				<div th:if="${@validateService.validateUserPermissionBlog(blogKey)}" class="post-edit">
-                    <a  th:text="'Editar post'" th:href="@{'/blog/' + ${blogKey} + '/post/edit/' + ${post.id}}">Title</a>
-                </div>		
+					<a th:text="'Editar post'" th:href="@{'/blog/' + ${blogKey} + '/post/edit/' + ${post.id}}">Title</a>
+				</div>
 			</div>
-			<p class="panel-body" th:text="${post.body}">Mensagem</p>			
+			<p class="panel-body" th:if="${post.body != ''}" th:text="${post.body}">Mensagem</p>
+
+			<div class="form-group" th:if="${post.secoes != null}">
+				<div class="col-sm-12" th:each="secao: ${post.secoes}">
+					<h4>
+						<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>
+					</h4>
+					<p class="secao-paragrafo" th:text="${secao.body}">body</p>
+				</div>
+			</div>			
 		</div>
 	</div>
 </body>

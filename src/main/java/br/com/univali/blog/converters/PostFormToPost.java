@@ -31,8 +31,9 @@ public class PostFormToPost implements Converter<PostForm, Post> {
 		} else {
 			post.setCreateDate(new Date());
 		}
-
-		post.setTitle(postForm.getTitle());
+		
+		post.setTitle(postForm.getTitle());		
+		post.setSecoes(postForm.getSecoes());		
 		post.setBody(postForm.getBody());
 		post.setBlogKey(postForm.getBlogKey());
 

@@ -21,20 +21,70 @@
 				<form autocomplete="off" action="#" th:action="@{/post/new}" th:object="${postForm}" method="post" role="form">
 					<input type="hidden" th:field="*{id}" />
 					<input type="hidden" th:field="*{blogKey}" />
+					<input type="hidden" id="secao" th:field="*{secao}" placeholder="" class="form-control" />
 
 					<div class="form-group">
 						<input type="text" th:field="*{title}" placeholder="Titulo" class="form-control" autofocus="autofocus" />
 						<label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="alert alert-danger"></label>
 					</div>
 
-					<div class="form-group">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" th:field="*{secaoActive}" name="secaoActive" id="chkSecao">
+						<label class="form-check-label" for="chkSecao">Habilitar seções</label>
+					</div>
+
+					<div id="divBody" class="form-group">
 						<textarea class="form-control" th:field="*{body}" placeholder="Mensagem" rows="7"></textarea>
 						<label th:if="${#fields.hasErrors('body')}" th:errors="*{body}" class="alert alert-danger"></label>
 					</div>
 
+					<div id="divSecao">
+						<div class="form-group">
+							<label for="secaoParent">Seções:</label>
+							<select class="form-control" id="secaoParent">
+								<option value="0"></option>
+							</select>
+						</div>
+						<!--
+						<div class="form-group">
+							<input type="text" th:field="*{secao.title}" placeholder="Titulo da seção" id="secaoTitle" class="form-control" />
+							<label th:if="${#fields.hasErrors('secao.title')}" th:errors="*{secao.title}" class="alert alert-danger"></label>
+						</div>
+						<div class="form-group">
+							<textarea class="form-control" th:field="*{secao.body}" id="secaoBody" placeholder="Mensagem da seção" rows="7"></textarea>
+							<label th:if="${#fields.hasErrors('secao.body')}" th:errors="*{secao.body}" class="alert alert-danger"></label>
+						</div> 
+						-->
+
+						<div class="form-group">
+							<input type="text" placeholder="Titulo da seção" id="secaoTitle" class="form-control" />
+						</div>
+						<div class="form-group">
+							<textarea class="form-control" id="secaoBody" placeholder="Mensagem da seção" rows="7"></textarea>
+						</div>
+						<div class="row">
+							<button id="btnAddSecao" type="button" class="btn btn-success btn-sm">
+								<span class="glyphicon glyphicon-plus"></span> Seção
+							</button>
+						</div>
+
+						<div class="row">
+							<div id="bodyTree" class="form-group divSecaoPostForm">
+								<label th:if="${postForm.secoes != null}">Seções:</label>
+								<div th:if="${postForm.secoes != null}" class="col-sm-12 secaoPostForm" th:each="secao: ${postForm.secoes}">
+									<h4>
+										<span th:text="${secao.paragrafo} + '.'">paragrafo</span>
+										<span th:text="${secao.title}">title</span>
+									</h4>
+									<!-- <p class="secao-paragrafo" th:text="${secao.body}">body</p> -->
+								</div>
+							</div>
+						</div>
+
+					</div>
 					<div class="row">
 						<div class="col-sm-3" style="float: none; margin: 0 auto;">
-							<input type="submit" class="btn btn-primary btn-block" value="Submit" />
+							<input type="submit" class="btn btn-primary btn-block" value="Salvar Post" />
 						</div>
 					</div>
 				</form>
@@ -42,6 +92,11 @@
 		</div>
 
 		<div th:replace="/fragments/footer :: footer" />
+
+		<script th:inline="javascript">			
+			var listSecao = [[${postForm.secoes}]];
+		</script>
+		<script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>

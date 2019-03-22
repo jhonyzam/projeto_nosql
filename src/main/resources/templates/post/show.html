@@ -30,10 +30,20 @@
 							<p class="form-control-static" th:text="${post.title}">Titulo</p>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" th:if="${post.body != ''}">
 						<label class="col-sm-2 control-label">Mensagem:</label>
 						<div class="col-sm-10">
 							<p class="form-control-static" th:text="${post.body}">Mensagem</p>
+						</div>
+					</div>
+
+					<div class="form-group" th:if="${post.secoes != null}">
+						<label class="col-sm-2 control-label">Mensagem:</label>
+						<div class="col-sm-10 secaoShowItem" th:each="secao: ${post.secoes}">
+							<h4>
+								<span th:text="${secao.paragrafo} + '.'">paragrafo</span> <span th:text="${secao.title}">title</span>
+							</h4>
+							<p class="secao-paragrafo" th:text="${secao.body}">body</p>
 						</div>
 					</div>
 				</form>
