@@ -125,7 +125,7 @@ public class BlogController {
 			return "/post/list";
 		}
 
-		Page<Post> posts = postService.findByBlogKeyOrderByCreateDateDesc(blogKey, page);
+		Page<Post> posts = postService.findByBlogKeyOrderByUpdateDateDesc(blogKey, page);
 
 		PagerPost pager = new PagerPost(posts);
 

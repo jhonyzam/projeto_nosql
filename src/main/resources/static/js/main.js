@@ -43,8 +43,6 @@ $(document).ready(function() {
 			objEditSecao = null;
 			indexEdit = null;
 			idEdit = null;
-			
-			componentAjustaSeq(1);
 		}				
 				
 		clearInputSecao();
@@ -101,7 +99,7 @@ $(document).ready(function() {
 	function clearInputSecao(){
 		$("#secaoTitle").val("");
 		$("#secaoBody").val("");
-		$("#sesaoParent").val("0").removeAttr("disabled");
+		$("#secaoParent").val("0").removeAttr("disabled");
 	}
 	
 	function componentCountParentSeq(parent){

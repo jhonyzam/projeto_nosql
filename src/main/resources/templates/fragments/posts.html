@@ -8,10 +8,13 @@
 				<h3>
 					<a th:text="${post.title}" th:href="@{'/blog/' + ${blogKey} + '/post/' + ${post.id}}">Title</a>
 				</h3>
-				<div class="post-date" th:text="'Criado: ' + ${#dates.format(post.createDate, 'dd/MM/yyyy - HH:mm')} + ' por: '">Created by</div>
+				
+				<div class="post-date" th:text="'Criado: ' + ${#dates.format(post.createDate, 'dd/MM/yyyy - HH:mm')} + ' por: '">Created by</div>							
 				<div class="post-autor">
 					<span th:text="${post.user.name}">Usuário</span>
 				</div>
+				<div class="" th:text="'Atualizado: ' + ${#dates.format(post.updateDate, 'dd/MM/yyyy - HH:mm')}">Edited by</div>
+				
 				<div th:if="${@validateService.validateUserPermissionBlog(blogKey)}" class="post-edit">
 					<a th:text="'Editar post'" th:href="@{'/blog/' + ${blogKey} + '/post/edit/' + ${post.id}}">Title</a>
 				</div>

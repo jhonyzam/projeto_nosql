@@ -68,5 +68,10 @@ public class PostService {
 	public Page<Post> findByBlogKeyOrderByCreateDateDesc(String blogKey, int page) {
 		return postRepository.findByBlogKeyOrderByCreateDateDesc(blogKey, new PageRequest(subtractPageByOne(page), 5));
 	}
+	
+	@SuppressWarnings("deprecation")
+	public Page<Post> findByBlogKeyOrderByUpdateDateDesc(String blogKey, int page) {
+		return postRepository.findByBlogKeyOrderByUpdateDateDesc(blogKey, new PageRequest(subtractPageByOne(page), 5));
+	}
 
 }
