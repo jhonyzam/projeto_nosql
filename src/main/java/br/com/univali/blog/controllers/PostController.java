@@ -39,25 +39,33 @@ public class PostController {
 
 	@RequestMapping("/blog/{blogKey}/post/{id}")
 	public String getPost(@PathVariable String id, Model model) {
-		Post post = postService.getById(id);
+		try {
+			Post post = postService.getById(id);
 
-		model.addAttribute("blogKey", post.getBlogKey());
-		model.addAttribute("post", post);
+			model.addAttribute("blogKey", post.getBlogKey());
+			model.addAttribute("post", post);
 
-		return "post/show";
+			return "post/show";
+		} catch (Exception e) {
+			throw new RuntimeException("Falha ao consultar um post");
+		}
 	}
 
 	@RequestMapping("/blog/{blogKey}/post/edit/{id}")
 	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {
-		if (!validateService.validateUserPermissionBlog(blogKey)) {
-			return "redirect:/blog/" + blogKey;
+		try {
+			if (!validateService.validateUserPermissionBlog(blogKey)) {
+				return "redirect:/blog/" + blogKey;
+			}
+
+			Post post = postService.getById(id);
+			PostForm postForm = postToPostForm.convert(post);
+
+			model.addAttribute("postForm", postForm);
+			return "post/postform";
+		} catch (Exception e) {
+			throw new RuntimeException("Falha ao consultar um post");
 		}
-
-		Post post = postService.getById(id);
-		PostForm postForm = postToPostForm.convert(post);
-
-		model.addAttribute("postForm", postForm);
-		return "post/postform";
 	}
 
 	@RequestMapping("/blog/{blogKey}/post/new")
@@ -76,7 +84,8 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/post/new", method = RequestMethod.POST)
-	public String savePost(@Valid PostForm postForm, BindingResult bindingResult) throws JsonParseException, JsonMappingException, IOException {
+	public String savePost(@Valid PostForm postForm, BindingResult bindingResult)
+			throws JsonParseException, JsonMappingException, IOException {
 		String blogKey = postForm.getBlogKey();
 
 		if (postForm.getSecaoActive()) {

@@ -44,7 +44,7 @@ public class BlogController {
 	@Autowired
 	BlogToBlogForm blogToBlogForm;
 
-	@RequestMapping({"/blog/list", "/blog"})
+	@RequestMapping({ "/blog/list", "/blog" })
 	public String listPosts(@RequestParam(defaultValue = "0") int page, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -70,16 +70,20 @@ public class BlogController {
 
 	@RequestMapping("/blog/{blogKey}/edit/{id}")
 	public String editPost(@PathVariable String id, @PathVariable String blogKey, Model model) {
-		if (!validateService.validateUserPermissionBlog(blogKey)) {
-			return "redirect:/blog/" + blogKey;
+		try {
+			if (!validateService.validateUserPermissionBlog(blogKey)) {
+				return "redirect:/blog/" + blogKey;
+			}
+
+			Blog blog = blogService.getById(id);
+			BlogForm blogForm = blogToBlogForm.convert(blog);
+
+			model.addAttribute("edit", true);
+			model.addAttribute("blogForm", blogForm);
+			return "blog/blogform";
+		} catch (Exception e) {
+			throw new RuntimeException("Falha ao consultar um blog");
 		}
-
-		Blog blog = blogService.getById(id);
-		BlogForm blogForm = blogToBlogForm.convert(blog);
-
-		model.addAttribute("edit", true);
-		model.addAttribute("blogForm", blogForm);
-		return "blog/blogform";
 	}
 
 	@RequestMapping(value = "/blog/new", method = RequestMethod.POST)
@@ -114,7 +118,8 @@ public class BlogController {
 	}
 
 	@RequestMapping(value = "/blog/{blogKey}", method = RequestMethod.GET)
-	public String blogForUsername(@PathVariable String blogKey, @RequestParam(defaultValue = "0") int page, Model model) {
+	public String blogForUsername(@PathVariable String blogKey, @RequestParam(defaultValue = "0") int page,
+			Model model) {
 		if (blogService.getByKey(blogKey) == null) {
 			model.addAttribute("errorMessage", "Blog " + blogKey + " não existe");
 			return "/post/list";
